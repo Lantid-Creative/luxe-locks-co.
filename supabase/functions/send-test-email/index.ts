@@ -1,10 +1,39 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.90.1";
+
+const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
+
+async function sendEmail(to: string[], subject: string, html: string) {
+  const response = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${RESEND_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: "Trazzy Beauty <onboarding@resend.dev>",
+      to,
+      subject,
+      html,
+    }),
+  });
+  
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || "Failed to send email");
+  }
+  
+  return response.json();
+}
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
+
+interface TestEmailRequest {
+  templateType: string;
+  toEmail: string;
+}
 
 serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
@@ -12,106 +41,78 @@ serve(async (req: Request) => {
   }
 
   try {
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    
-    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
-      auth: { autoRefreshToken: false, persistSession: false },
-    });
+    const { templateType, toEmail }: TestEmailRequest = await req.json();
 
-    // Verify admin
-    const authHeader = req.headers.get("Authorization");
-    if (!authHeader) {
-      throw new Error("No authorization header");
-    }
-
-    const token = authHeader.replace("Bearer ", "");
-    const { data: { user }, error: authError } = await supabaseAdmin.auth.getUser(token);
-    
-    if (authError || !user) {
-      throw new Error("Unauthorized");
-    }
-
-    const { templateId } = await req.json();
-
-    console.log(`Sending test email for template: ${templateId} to ${user.email}`);
-
-    // Sample data for each template
-    const sampleData: Record<string, Record<string, unknown>> = {
-      welcome: {
-        name: "Test User",
-        shopUrl: "https://trazzybeauty.com/shop",
-      },
-      "order-confirmation": {
-        orderNumber: "TRZ-12345",
-        customerName: "Test User",
-        items: [
-          { name: "Brazilian Body Wave Wig", image: "https://via.placeholder.com/80", price: 299.99, quantity: 1 },
-          { name: "Lace Front Closure", image: "https://via.placeholder.com/80", price: 89.99, quantity: 2 },
-        ],
-        subtotal: "479.97",
-        shipping: "FREE",
-        total: "479.97",
-        trackingUrl: "https://trazzybeauty.com/orders/TRZ-12345",
-      },
-      "order-shipped": {
-        orderNumber: "TRZ-12345",
-        customerName: "Test User",
-        trackingNumber: "1Z999AA10123456784",
-        carrier: "UPS",
-        estimatedDelivery: "March 15-17, 2024",
-        trackingUrl: "https://ups.com/track/1Z999AA10123456784",
-      },
-      "abandoned-cart": {
-        customerName: "Test User",
-        items: [
-          { name: "HD Lace Wig 24\"", image: "https://via.placeholder.com/80", price: 359.99 },
-        ],
-        cartUrl: "https://trazzybeauty.com/cart",
-      },
-      "wishlist-reminder": {
-        customerName: "Test User",
-        itemCount: 5,
-        items: [
-          { name: "Kinky Curly Wig", image: "https://via.placeholder.com/80", price: 279.99 },
-          { name: "Straight Bob Wig", image: "https://via.placeholder.com/80", price: 199.99 },
-        ],
-        wishlistUrl: "https://trazzybeauty.com/wishlist",
-      },
+    const testData = {
+      name: "Test User",
+      orderNumber: "TEST-12345",
+      orderDate: new Date().toLocaleDateString(),
+      total: "299.99",
+      shopUrl: "https://trazzybeauty.com/shop",
+      cartUrl: "https://trazzybeauty.com/cart",
+      wishlistUrl: "https://trazzybeauty.com/wishlist",
+      trackingUrl: "https://trazzybeauty.com/track",
+      trackingNumber: "1Z999AA10123456784",
+      carrier: "UPS",
+      estimatedDelivery: "January 25, 2024",
+      resetUrl: "https://trazzybeauty.com/reset-password?token=test",
     };
 
-    const data = sampleData[templateId] || {};
-    
-    // Call the main send-email function internally
-    const response = await fetch(`${supabaseUrl}/functions/v1/send-email`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${supabaseServiceKey}`,
-      },
-      body: JSON.stringify({
-        to: user.email,
-        template: templateId,
-        data,
-      }),
-    });
+    const baseStyles = `
+      <style>
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background-color: #f8f8f8; }
+        .container { max-width: 600px; margin: 0 auto; background-color: #ffffff; }
+        .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 40px 30px; text-align: center; }
+        .logo { font-size: 28px; font-weight: bold; color: #d4af37; letter-spacing: 2px; }
+        .content { padding: 40px 30px; }
+        .button { display: inline-block; background: linear-gradient(135deg, #d4af37 0%, #b8962e 100%); color: #1a1a2e !important; text-decoration: none; padding: 14px 30px; border-radius: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .footer { background-color: #1a1a2e; color: #999; padding: 30px; text-align: center; font-size: 12px; }
+        .footer a { color: #d4af37; text-decoration: none; }
+        h1 { color: #1a1a2e; margin: 0 0 20px; }
+      </style>
+    `;
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Failed to send test email: ${errorText}`);
-    }
+    let subject = `[TEST] ${templateType.replace(/_/g, ' ').toUpperCase()} Email`;
+    let html = `
+      <!DOCTYPE html>
+      <html>
+      <head>${baseStyles}</head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <div class="logo">✨ TRAZZY BEAUTY</div>
+            <p style="color: #ff6b6b; font-size: 12px;">⚠️ TEST EMAIL</p>
+          </div>
+          <div class="content">
+            <h1>Test: ${templateType.replace(/_/g, ' ')}</h1>
+            <p>This is a test email for the <strong>${templateType}</strong> template.</p>
+            <p>Test data used:</p>
+            <pre style="background: #f5f5f5; padding: 15px; border-radius: 8px; overflow: auto;">${JSON.stringify(testData, null, 2)}</pre>
+          </div>
+          <div class="footer">
+            <p>This is a test email from Trazzy Beauty Admin</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `;
+
+    const data = await sendEmail([toEmail], subject, html);
+
+    console.log("Test email sent:", data);
 
     return new Response(
-      JSON.stringify({ success: true, message: `Test email sent to ${user.email}` }),
+      JSON.stringify({ success: true, data }),
       {
         status: 200,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       }
     );
-  } catch (error) {
-    console.error("Error sending test email:", error);
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    console.error("Error sending test email:", errorMessage);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: errorMessage }),
       {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },

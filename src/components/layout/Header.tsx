@@ -3,7 +3,9 @@ import { Link, useLocation } from 'react-router-dom';
 import { ShoppingBag, Heart, User, Menu, X, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/context/CartContext';
+import { useAuth } from '@/context/AuthContext';
 import { cn } from '@/lib/utils';
+import { SearchDialog } from '@/components/search/SearchDialog';
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -15,66 +17,73 @@ const navigation = [
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const { totalItems, setIsCartOpen } = useCart();
+  const { user } = useAuth();
   const location = useLocation();
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-      {/* Announcement Bar */}
-      <div className="bg-primary text-primary-foreground text-center py-2 text-sm">
-        <p>✨ Free Shipping on Orders Over $200 | Use Code: <span className="font-semibold">LUXE20</span> for 20% Off</p>
-      </div>
+    <>
+      <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+        {/* Announcement Bar */}
+        <div className="bg-primary text-primary-foreground text-center py-2 text-sm">
+          <p>✨ Free Shipping on Orders Over $200 | Use Code: <span className="font-semibold">LUXE20</span> for 20% Off</p>
+        </div>
 
-      <nav className="container mx-auto px-4 lg:px-8">
-        <div className="flex items-center justify-between h-16 lg:h-20">
-          {/* Mobile Menu Button */}
-          <button
-            className="lg:hidden p-2 -ml-2"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
-          </button>
+        <nav className="container mx-auto px-4 lg:px-8">
+          <div className="flex items-center justify-between h-16 lg:h-20">
+            {/* Mobile Menu Button */}
+            <button
+              className="lg:hidden p-2 -ml-2"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
+            </button>
 
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
-            <span className="font-serif text-2xl lg:text-3xl font-semibold tracking-tight">
-              LUXE<span className="text-gold">HAIR</span>
-            </span>
-          </Link>
+            {/* Logo */}
+            <Link to="/" className="flex items-center gap-2">
+              <span className="font-serif text-2xl lg:text-3xl font-semibold tracking-tight">
+                TRAZZY<span className="text-gold">BEAUTY</span>
+              </span>
+            </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-8">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className={cn(
-                  'text-sm font-medium transition-colors hover:text-gold relative py-2',
-                  location.pathname === item.href
-                    ? 'text-foreground after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-gold'
-                    : 'text-muted-foreground'
-                )}
-              >
-                {item.name}
-              </Link>
-            ))}
-          </div>
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center gap-8">
+              {navigation.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className={cn(
+                    'text-sm font-medium transition-colors hover:text-gold relative py-2',
+                    location.pathname === item.href
+                      ? 'text-foreground after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-gold'
+                      : 'text-muted-foreground'
+                  )}
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </div>
 
-          {/* Right Actions */}
-          <div className="flex items-center gap-2 lg:gap-4">
-            <Button variant="ghost" size="icon" className="hidden lg:flex">
-              <Search className="w-5 h-5" />
-            </Button>
-            <Button variant="ghost" size="icon">
-              <Heart className="w-5 h-5" />
-            </Button>
-            <Button variant="ghost" size="icon" className="hidden lg:flex">
-              <User className="w-5 h-5" />
-            </Button>
+            {/* Right Actions */}
+            <div className="flex items-center gap-2 lg:gap-4">
+              <Button variant="ghost" size="icon" className="hidden lg:flex" onClick={() => setSearchOpen(true)}>
+                <Search className="w-5 h-5" />
+              </Button>
+              <Button variant="ghost" size="icon" asChild>
+                <Link to="/wishlist">
+                  <Heart className="w-5 h-5" />
+                </Link>
+              </Button>
+              <Button variant="ghost" size="icon" className="hidden lg:flex" asChild>
+                <Link to={user ? "/account" : "/auth"}>
+                  <User className="w-5 h-5" />
+                </Link>
+              </Button>
             <Button
               variant="ghost"
               size="icon"
@@ -126,7 +135,9 @@ export function Header() {
             </div>
           </div>
         </div>
-      </nav>
-    </header>
+        </nav>
+      </header>
+      <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
+    </>
   );
 }
