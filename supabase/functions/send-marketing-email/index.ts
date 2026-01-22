@@ -3,6 +3,29 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.90.1";
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 
+async function sendEmail(to: string[], subject: string, html: string) {
+  const response = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${RESEND_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: "Trazzy Beauty <onboarding@resend.dev>",
+      to,
+      subject,
+      html,
+    }),
+  });
+  
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || "Failed to send email");
+  }
+  
+  return response.json();
+}
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -38,16 +61,18 @@ serve(async (req: Request) => {
     }
 
     const token = authHeader.replace("Bearer ", "");
-    const { data: { user }, error: authError } = await supabaseAdmin.auth.getUser(token);
+    const { data: claims, error: claimsError } = await supabaseAdmin.auth.getClaims(token);
     
-    if (authError || !user) {
+    if (claimsError || !claims?.claims) {
       throw new Error("Unauthorized");
     }
+
+    const userId = claims.claims.sub as string;
 
     const { data: roleData } = await supabaseAdmin
       .from("user_roles")
       .select("role")
-      .eq("user_id", user.id)
+      .eq("user_id", userId)
       .eq("role", "admin")
       .single();
 
@@ -60,8 +85,6 @@ serve(async (req: Request) => {
     console.log(`Sending marketing email to audience: ${emailData.audience}`);
 
     // Get recipient emails based on audience
-    // For now, we'll get all users from profiles
-    // In production, you'd want a proper email subscription table
     const { data: profiles, error: profilesError } = await supabaseAdmin
       .from("profiles")
       .select("user_id");
@@ -70,7 +93,7 @@ serve(async (req: Request) => {
       throw profilesError;
     }
 
-    // Get user emails from auth.users (admin only)
+    // Get user emails from auth.users
     const { data: { users }, error: usersError } = await supabaseAdmin.auth.admin.listUsers();
     
     if (usersError) {
@@ -145,12 +168,7 @@ serve(async (req: Request) => {
 
       for (const email of batch) {
         try {
-          await resend.emails.send({
-            from: "Trazzy Beauty <noreply@resend.dev>",
-            to: [email],
-            subject: emailData.subject,
-            html,
-          });
+          await sendEmail([email], emailData.subject, html);
           sentCount++;
         } catch (err) {
           console.error(`Failed to send to ${email}:`, err);
@@ -168,10 +186,11 @@ serve(async (req: Request) => {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       }
     );
-  } catch (error) {
-    console.error("Error sending marketing email:", error);
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    console.error("Error sending marketing email:", errorMessage);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: errorMessage }),
       {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
