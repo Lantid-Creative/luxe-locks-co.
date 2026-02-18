@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, forwardRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Heart, ShoppingBag, Star, GitCompare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -14,7 +14,7 @@ interface ProductCardProps {
   className?: string;
 }
 
-export function ProductCardNew({ product, className }: ProductCardProps) {
+export const ProductCardNew = forwardRef<HTMLDivElement, ProductCardProps>(function ProductCardNew({ product, className }, ref) {
   const [isHovered, setIsHovered] = useState(false);
   const { isInWishlist, addToWishlist, removeFromWishlist } = useWishlist();
   const { addToCompare, removeFromCompare, isInCompare } = useCompare();
@@ -62,19 +62,24 @@ export function ProductCardNew({ product, className }: ProductCardProps) {
   const isBestseller = product.bestseller || product.is_bestseller;
   const isNew = product.new || product.is_featured;
 
+  const productUrl = `/product/${product.slug || product.id}`;
+
   return (
     <div
+      ref={ref}
       className={cn('group relative', className)}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Image Container */}
-      <Link to={`/product/${product.slug || product.id}`} className="block relative overflow-hidden rounded-xl bg-muted aspect-[3/4]">
-        <img
-          src={product.image}
-          alt={product.name}
-          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-        />
+      <div className="relative overflow-hidden rounded-xl bg-muted aspect-[3/4]">
+        <Link to={productUrl} className="block w-full h-full">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+          />
+        </Link>
         
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-2">
@@ -133,20 +138,20 @@ export function ProductCardNew({ product, className }: ProductCardProps) {
             className="w-full bg-background hover:bg-gold hover:text-accent-foreground transition-colors"
             asChild
           >
-            <Link to={`/product/${product.slug || product.id}`}>
+            <Link to={productUrl}>
               <ShoppingBag className="w-4 h-4 mr-2" />
               Quick View
             </Link>
           </Button>
         </div>
-      </Link>
+      </div>
 
       {/* Product Info */}
       <div className="mt-4 space-y-2">
         <p className="text-xs text-muted-foreground uppercase tracking-wider">
           {product.hairType} • {product.laceType}
         </p>
-        <Link to={`/product/${product.slug || product.id}`}>
+        <Link to={productUrl}>
           <h3 className="font-medium text-foreground hover:text-gold transition-colors line-clamp-2">
             {product.name}
           </h3>
@@ -186,4 +191,4 @@ export function ProductCardNew({ product, className }: ProductCardProps) {
       </div>
     </div>
   );
-}
+});
