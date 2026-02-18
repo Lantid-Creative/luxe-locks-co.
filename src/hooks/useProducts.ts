@@ -149,11 +149,20 @@ export const useProduct = (idOrSlug: string) => {
   return useQuery({
     queryKey: ['product', idOrSlug],
     queryFn: async () => {
-      const { data, error } = await supabase
+      // Check if it's a valid UUID format
+      const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(idOrSlug);
+      
+      let query = supabase
         .from('products')
-        .select('*, category:categories(*)')
-        .or(`id.eq.${idOrSlug},slug.eq.${idOrSlug}`)
-        .single();
+        .select('*, category:categories(*)');
+
+      if (isUUID) {
+        query = query.eq('id', idOrSlug);
+      } else {
+        query = query.eq('slug', idOrSlug);
+      }
+
+      const { data, error } = await query.single();
 
       if (error) throw error;
       return data as Product;
