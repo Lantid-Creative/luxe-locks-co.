@@ -3,7 +3,7 @@ import { Heart, ShoppingBag, Trash2, ArrowLeft } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/layout/CartDrawer';
-import { WhatsAppButton } from '@/components/layout/WhatsAppButton';
+
 import { Button } from '@/components/ui/button';
 import { useWishlist } from '@/context/WishlistContext';
 import { useCart } from '@/context/CartContext';
@@ -39,7 +39,6 @@ export default function Wishlist() {
         </main>
         <Footer />
         <CartDrawer />
-        <WhatsAppButton />
       </>
     );
   }
@@ -65,7 +64,6 @@ export default function Wishlist() {
         </main>
         <Footer />
         <CartDrawer />
-        <WhatsAppButton />
       </>
     );
   }
@@ -163,7 +161,7 @@ export default function Wishlist() {
       </main>
       <Footer />
       <CartDrawer />
-      <WhatsAppButton />
+      
     </>
   );
 }

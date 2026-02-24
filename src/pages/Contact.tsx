@@ -1,8 +1,8 @@
-import { Mail, Phone, MapPin, Clock, Instagram, Facebook } from 'lucide-react';
+import { Mail, MapPin, Clock, Instagram, Facebook } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/layout/CartDrawer';
-import { WhatsAppButton } from '@/components/layout/WhatsAppButton';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -11,14 +11,8 @@ const contactInfo = [
   {
     icon: Mail,
     title: 'Email',
-    value: 'hello@luxehair.com',
-    href: 'mailto:hello@luxehair.com',
-  },
-  {
-    icon: Phone,
-    title: 'Phone',
-    value: '+1 (234) 567-890',
-    href: 'tel:+1234567890',
+    value: 'hello@trazzie.com',
+    href: 'mailto:hello@trazzie.com',
   },
   {
     icon: MapPin,
@@ -112,25 +106,6 @@ export default function Contact() {
                 ))}
               </div>
 
-              {/* WhatsApp CTA */}
-              <div className="bg-[#25D366] rounded-2xl p-8 text-white">
-                <h3 className="font-serif text-2xl font-semibold mb-3">
-                  Chat on WhatsApp
-                </h3>
-                <p className="opacity-90 mb-6">
-                  Get instant support and styling advice from our beauty experts. 
-                  We typically respond within minutes!
-                </p>
-                <a
-                  href="https://wa.me/1234567890"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-white text-[#25D366] rounded-lg font-medium hover:bg-white/90 transition-colors"
-                >
-                  Start a Chat
-                </a>
-              </div>
-
               {/* Social Links */}
               <div className="mt-8">
                 <h3 className="font-serif text-xl font-semibold mb-4">Follow Us</h3>
@@ -155,7 +130,7 @@ export default function Contact() {
       </main>
 
       <Footer />
-      <WhatsAppButton />
+      
     </div>
   );
 }
