@@ -3,7 +3,7 @@ import { ArrowRight } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/layout/CartDrawer';
-import { WhatsAppButton } from '@/components/layout/WhatsAppButton';
+
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { collections } from '@/lib/data';
 
@@ -72,7 +72,7 @@ export default function Collections() {
       </main>
 
       <Footer />
-      <WhatsAppButton />
+      
     </div>
   );
 }

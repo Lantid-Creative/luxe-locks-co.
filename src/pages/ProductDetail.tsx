@@ -4,7 +4,7 @@ import { ChevronLeft, Heart, Minus, Plus, Star, Truck, Shield, RotateCcw, Check,
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/layout/CartDrawer';
-import { WhatsAppButton } from '@/components/layout/WhatsAppButton';
+
 import { ProductCardNew } from '@/components/products/ProductCardNew';
 import { products as mockProducts, reviews } from '@/lib/data';
 import { useProduct, useProducts } from '@/hooks/useProducts';
@@ -477,7 +477,7 @@ export default function ProductDetail() {
       </main>
 
       <Footer />
-      <WhatsAppButton />
+      
     </div>
   );
 }

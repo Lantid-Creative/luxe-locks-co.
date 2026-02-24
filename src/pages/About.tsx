@@ -1,7 +1,7 @@
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/layout/CartDrawer';
-import { WhatsAppButton } from '@/components/layout/WhatsAppButton';
+
 import { Sparkles, Heart, Award, Users } from 'lucide-react';
 
 const values = [
@@ -149,7 +149,7 @@ export default function About() {
       </main>
 
       <Footer />
-      <WhatsAppButton />
+      
     </div>
   );
 }

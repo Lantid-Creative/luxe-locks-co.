@@ -1,7 +1,7 @@
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/layout/CartDrawer';
-import { WhatsAppButton } from '@/components/layout/WhatsAppButton';
+
 import { HeroSection } from '@/components/home/HeroSection';
 import { CollectionsSection } from '@/components/home/CollectionsSection';
 import { BestsellersSection } from '@/components/home/BestsellersSection';
@@ -25,7 +25,7 @@ const Index = () => {
         <NewsletterSection />
       </main>
       <Footer />
-      <WhatsAppButton />
+      
     </div>
   );
 };

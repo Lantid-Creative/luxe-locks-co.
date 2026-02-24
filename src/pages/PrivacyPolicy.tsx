@@ -1,7 +1,7 @@
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/layout/CartDrawer';
-import { WhatsAppButton } from '@/components/layout/WhatsAppButton';
+
 
 export default function PrivacyPolicy() {
   return (
@@ -147,7 +147,7 @@ export default function PrivacyPolicy() {
       </main>
 
       <Footer />
-      <WhatsAppButton />
+      
     </div>
   );
 }

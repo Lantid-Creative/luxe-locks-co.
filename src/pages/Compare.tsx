@@ -3,7 +3,7 @@ import { X, ShoppingBag, Star, ArrowLeft } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/layout/CartDrawer';
-import { WhatsAppButton } from '@/components/layout/WhatsAppButton';
+
 import { Button } from '@/components/ui/button';
 import { useCompare } from '@/context/CompareContext';
 import { useCart } from '@/context/CartContext';
@@ -48,7 +48,6 @@ export default function Compare() {
         </main>
         <Footer />
         <CartDrawer />
-        <WhatsAppButton />
       </>
     );
   }
@@ -209,7 +208,7 @@ export default function Compare() {
       </main>
       <Footer />
       <CartDrawer />
-      <WhatsAppButton />
+      
     </>
   );
 }

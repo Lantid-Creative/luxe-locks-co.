@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Instagram, Facebook, Twitter, Youtube, Mail, Phone, MapPin } from 'lucide-react';
+import { Instagram, Facebook, Twitter, Youtube, Mail } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
@@ -156,18 +156,11 @@ export function Footer() {
             {/* Contact Info */}
             <div className="mt-6 space-y-3">
               <a
-                href="mailto:hello@luxehair.com"
+                href="mailto:hello@trazzie.com"
                 className="flex items-center gap-2 text-primary-foreground/70 hover:text-gold transition-colors"
               >
                 <Mail className="w-4 h-4" />
-                <span>hello@luxehair.com</span>
-              </a>
-              <a
-                href="tel:+1234567890"
-                className="flex items-center gap-2 text-primary-foreground/70 hover:text-gold transition-colors"
-              >
-                <Phone className="w-4 h-4" />
-                <span>+1 (234) 567-890</span>
+                <span>hello@trazzie.com</span>
               </a>
             </div>
           </div>
