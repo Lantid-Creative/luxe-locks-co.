@@ -14,6 +14,8 @@ import { useAuth } from '@/context/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { PageMeta } from '@/components/seo/PageMeta';
+import { CouponInput, calculateDiscount } from '@/components/checkout/CouponInput';
 
 type CheckoutStep = 'information' | 'shipping' | 'payment' | 'confirmation';
 
