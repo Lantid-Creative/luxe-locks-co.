@@ -140,7 +140,7 @@
   }
 
   .gold-glow {
-    box-shadow: 0 0 40px hsl(340 45% 55% / 0.15);
+    box-shadow: 0 0 40px hsl(270 50% 45% / 0.2);
   }
 
   .card-hover {
