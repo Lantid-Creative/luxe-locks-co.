@@ -1,8 +1,54 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { collections } from '@/lib/data';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
+
+const collectionData = [
+  {
+    id: 'body-wave',
+    name: 'Body Wave Collection',
+    description: 'Luxurious waves for effortless glamour',
+    slug: 'body-wave',
+  },
+  {
+    id: 'straight',
+    name: 'Straight Collection',
+    description: 'Sleek, polished looks for every occasion',
+    slug: 'straight',
+  },
+  {
+    id: 'human-hair',
+    name: 'Human Hair',
+    description: '100% premium human hair products',
+    slug: 'human-hair',
+  },
+  {
+    id: 'all',
+    name: 'All Products',
+    description: 'Browse our full range of luxury wigs',
+    slug: 'all',
+  },
+];
 
 export function CollectionsSection() {
+  const { data: products } = useQuery({
+    queryKey: ['products-for-collections'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('products')
+        .select('featured_image, name')
+        .eq('is_active', true)
+        .order('created_at', { ascending: true })
+        .limit(4);
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const getImage = (index: number) => {
+    return products?.[index]?.featured_image || '/placeholder.svg';
+  };
+
   return (
     <section className="py-20 lg:py-28 bg-background">
       <div className="container mx-auto px-4 lg:px-8">
@@ -21,15 +67,15 @@ export function CollectionsSection() {
 
         {/* Collections Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {collections.map((collection, index) => (
+          {collectionData.map((collection, index) => (
             <Link
               key={collection.id}
-              to={`/shop?collection=${collection.id}`}
+              to={collection.slug === 'all' ? '/shop' : `/shop?collection=${collection.slug}`}
               className="group relative overflow-hidden rounded-2xl aspect-[3/4] card-hover"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               <img
-                src={collection.image}
+                src={getImage(index)}
                 alt={collection.name}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
@@ -39,9 +85,6 @@ export function CollectionsSection() {
               
               {/* Content */}
               <div className="absolute inset-0 p-6 flex flex-col justify-end">
-                <span className="text-gold text-sm font-medium mb-2">
-                  {collection.productCount} Products
-                </span>
                 <h3 className="font-serif text-xl lg:text-2xl font-semibold text-primary-foreground mb-2">
                   {collection.name}
                 </h3>
