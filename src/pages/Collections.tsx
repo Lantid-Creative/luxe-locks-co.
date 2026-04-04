@@ -4,11 +4,48 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/layout/CartDrawer';
 import { PageMeta } from '@/components/seo/PageMeta';
-
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
-import { collections } from '@/lib/data';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 
 export default function Collections() {
+  const { data: products } = useQuery({
+    queryKey: ['products-for-collections-page'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('products')
+        .select('id, featured_image, name, slug')
+        .eq('is_active', true)
+        .order('created_at', { ascending: true });
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const collectionData = [
+    {
+      id: 'straight',
+      name: 'Straight Collection',
+      description: 'Sleek, polished looks for every occasion. Our straight wigs deliver effortless elegance with silky-smooth textures.',
+      image: products?.find(p => p.name.toLowerCase().includes('straight'))?.featured_image || '/placeholder.svg',
+      productCount: products?.filter(p => p.name.toLowerCase().includes('straight')).length || 0,
+    },
+    {
+      id: 'body-wave',
+      name: 'Body Wave Collection',
+      description: 'Luxurious waves that flow naturally. Perfect for adding volume and movement to your everyday look.',
+      image: products?.find(p => p.name.toLowerCase().includes('bodywave') || p.name.toLowerCase().includes('body wave'))?.featured_image || '/placeholder.svg',
+      productCount: products?.filter(p => p.name.toLowerCase().includes('bodywave') || p.name.toLowerCase().includes('body wave')).length || 0,
+    },
+    {
+      id: 'human-hair',
+      name: 'Human Hair Collection',
+      description: '100% virgin human hair for ultimate luxury. Style, color, and heat-treat just like your own natural hair.',
+      image: products?.[0]?.featured_image || '/placeholder.svg',
+      productCount: products?.length || 0,
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-background">
       <PageMeta title="Collections | Trazzie" description="Explore our curated wig collections — lace fronts, closures, and more. Find your perfect style and express your beauty." />
@@ -18,7 +55,6 @@ export default function Collections() {
       <main className="pt-32 pb-20">
         <div className="container mx-auto px-4 lg:px-8">
           <Breadcrumbs items={[{ label: 'Collections' }]} />
-          {/* Header */}
           <div className="max-w-2xl mx-auto text-center mb-16">
             <p className="text-gold text-sm font-medium tracking-wider uppercase mb-4">
               Curated For You
@@ -32,9 +68,8 @@ export default function Collections() {
             </p>
           </div>
 
-          {/* Collections Grid */}
           <div className="space-y-8">
-            {collections.map((collection, index) => (
+            {collectionData.map((collection, index) => (
               <Link
                 key={collection.id}
                 to={`/shop?collection=${collection.id}`}
@@ -74,7 +109,6 @@ export default function Collections() {
       </main>
 
       <Footer />
-      
     </div>
   );
 }

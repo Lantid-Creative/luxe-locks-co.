@@ -2,8 +2,9 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/layout/CartDrawer';
 import { PageMeta } from '@/components/seo/PageMeta';
-
 import { Sparkles, Heart, Award, Users } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 
 const values = [
   {
@@ -23,12 +24,33 @@ const values = [
   },
   {
     icon: Users,
-            title: 'Community',
-            description: 'Join our community of 50,000+ women who have transformed their look and confidence with Trazzie.',
+    title: 'Community',
+    description: 'Join our community of 50,000+ women who have transformed their look and confidence with Trazzie.',
   },
 ];
 
 export default function About() {
+  const { data: products } = useQuery({
+    queryKey: ['products-for-about'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('products')
+        .select('featured_image, images')
+        .eq('is_active', true)
+        .limit(3);
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const aboutImages: string[] = [];
+  products?.forEach((p) => {
+    if (p.featured_image) aboutImages.push(p.featured_image);
+    p.images?.forEach((img) => {
+      if (img && !aboutImages.includes(img)) aboutImages.push(img);
+    });
+  });
+
   return (
     <div className="min-h-screen bg-background">
       <PageMeta title="About Trazzie — Our Story" description="Founded in 2020, Trazzie empowers women through premium quality wigs. Trusted by 50,000+ customers worldwide with a 4.9 average rating." />
@@ -58,14 +80,14 @@ export default function About() {
           <div className="grid lg:grid-cols-2 gap-8">
             <div className="aspect-[4/5] rounded-2xl overflow-hidden">
               <img
-                src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&q=80"
+                src={aboutImages[0] || '/placeholder.svg'}
                 alt="Beautiful woman with luxurious hair"
                 className="w-full h-full object-cover"
               />
             </div>
             <div className="aspect-[4/5] rounded-2xl overflow-hidden lg:mt-16">
               <img
-                src="https://images.unsplash.com/photo-1595959183082-7b570b7e1dfa?w=800&q=80"
+                src={aboutImages[1] || aboutImages[0] || '/placeholder.svg'}
                 alt="Woman with natural looking wig"
                 className="w-full h-full object-cover"
               />
@@ -151,7 +173,6 @@ export default function About() {
       </main>
 
       <Footer />
-      
     </div>
   );
 }
