@@ -75,7 +75,7 @@ export function CollectionsSection() {
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               <img
-                src={getImage(index)}
+                src={collection.image}
                 alt={collection.name}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
