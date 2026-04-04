@@ -3,51 +3,51 @@ import { ArrowRight } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
-const collectionData = [
-  {
-    id: 'body-wave',
-    name: 'Body Wave Collection',
-    description: 'Luxurious waves for effortless glamour',
-    slug: 'body-wave',
-  },
-  {
-    id: 'straight',
-    name: 'Straight Collection',
-    description: 'Sleek, polished looks for every occasion',
-    slug: 'straight',
-  },
-  {
-    id: 'human-hair',
-    name: 'Human Hair',
-    description: '100% premium human hair products',
-    slug: 'human-hair',
-  },
-  {
-    id: 'all',
-    name: 'All Products',
-    description: 'Browse our full range of luxury wigs',
-    slug: 'all',
-  },
-];
-
 export function CollectionsSection() {
   const { data: products } = useQuery({
     queryKey: ['products-for-collections'],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('products')
-        .select('featured_image, name')
+        .select('id, featured_image, name, slug')
         .eq('is_active', true)
-        .order('created_at', { ascending: true })
-        .limit(4);
+        .order('created_at', { ascending: true });
       if (error) throw error;
       return data;
     },
   });
 
-  const getImage = (index: number) => {
-    return products?.[index]?.featured_image || '/placeholder.svg';
-  };
+  // Map each collection to the correct product image by matching product name keywords
+  const collectionData = [
+    {
+      id: 'straight',
+      name: 'Straight Collection',
+      description: 'Sleek, polished looks for every occasion',
+      slug: 'straight',
+      image: products?.find(p => p.name.toLowerCase().includes('straight'))?.featured_image || '/placeholder.svg',
+    },
+    {
+      id: 'bodywave-24',
+      name: 'Body Wave 24"',
+      description: 'Long, luxurious waves for maximum glamour',
+      slug: 'body-wave',
+      image: products?.find(p => p.name.toLowerCase().includes('24'))?.featured_image || '/placeholder.svg',
+    },
+    {
+      id: 'bodywave-16',
+      name: 'Body Wave 16"',
+      description: 'Effortless everyday elegance',
+      slug: 'body-wave',
+      image: products?.find(p => p.name.toLowerCase().includes('16'))?.featured_image || '/placeholder.svg',
+    },
+    {
+      id: 'all',
+      name: 'Shop All',
+      description: 'Browse our full range of luxury wigs',
+      slug: 'all',
+      image: products?.[0]?.featured_image || '/placeholder.svg',
+    },
+  ];
 
   return (
     <section className="py-20 lg:py-28 bg-background">
