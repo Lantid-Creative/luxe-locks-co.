@@ -1,8 +1,25 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 
 export function HeroSection() {
+  const { data: products } = useQuery({
+    queryKey: ['products-for-hero'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('products')
+        .select('featured_image')
+        .eq('is_active', true)
+        .limit(1);
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const heroImage = products?.[0]?.featured_image || '/placeholder.svg';
+
   return (
     <section className="relative min-h-screen flex items-center bg-cream-gradient overflow-hidden">
       {/* Background Pattern */}
@@ -74,7 +91,7 @@ export function HeroSection() {
           <div className="relative animate-fade-up stagger-2">
             <div className="relative aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl gold-glow">
               <img
-                src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&q=80"
+                src={heroImage}
                 alt="Beautiful woman with luxurious hair"
                 className="w-full h-full object-cover"
               />
@@ -98,9 +115,9 @@ export function HeroSection() {
             <div className="absolute -top-4 -right-4 lg:-right-8 bg-background rounded-xl p-4 shadow-xl border border-border animate-float" style={{ animationDelay: '1s' }}>
               <div className="flex items-center gap-3">
                 <div className="flex -space-x-2">
-                  <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=100&q=80" alt="Customer" className="w-8 h-8 rounded-full border-2 border-background object-cover" />
-                  <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&q=80" alt="Customer" className="w-8 h-8 rounded-full border-2 border-background object-cover" />
-                  <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&q=80" alt="Customer" className="w-8 h-8 rounded-full border-2 border-background object-cover" />
+                  <div className="w-8 h-8 rounded-full border-2 border-background bg-gold/20 flex items-center justify-center text-xs font-medium text-gold">M</div>
+                  <div className="w-8 h-8 rounded-full border-2 border-background bg-gold/30 flex items-center justify-center text-xs font-medium text-gold">J</div>
+                  <div className="w-8 h-8 rounded-full border-2 border-background bg-gold/40 flex items-center justify-center text-xs font-medium text-gold">A</div>
                 </div>
                 <div>
                   <p className="font-medium text-sm">50K+ Reviews</p>
