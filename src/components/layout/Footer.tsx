@@ -25,9 +25,7 @@ const footerLinks = {
 
 const socialLinks = [
   { icon: Instagram, href: '#', label: 'Instagram' },
-  { icon: Facebook, href: '#', label: 'Facebook' },
-  { icon: Twitter, href: '#', label: 'Twitter' },
-  { icon: Youtube, href: '#', label: 'YouTube' },
+  { icon: null, href: '#', label: 'TikTok' },
 ];
 
 const trustBadges = [
