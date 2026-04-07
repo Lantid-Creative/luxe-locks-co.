@@ -18,7 +18,7 @@ const contactInfo = [
   {
     icon: MapPin,
     title: 'Address',
-    value: '123 Beauty Avenue, New York, NY 10001',
+    value: 'Sagamore Pkwy W, West Lafayette, IN 47906',
     href: '#',
   },
   {
