@@ -38,6 +38,7 @@ import BlogPostPage from "./pages/BlogPost";
 import BlogPosts from "./pages/admin/BlogPosts";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
+import FAQ from "./pages/FAQ";
 
 const queryClient = new QueryClient();
 
