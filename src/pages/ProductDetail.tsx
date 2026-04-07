@@ -100,7 +100,7 @@ export default function ProductDetail() {
   const [selectedCapSize, setSelectedCapSize] = useState('');
   const [quantity, setQuantity] = useState(1);
 
-  // Set defaults when product loads
+  // Set defaults when product loads & track recently viewed
   useMemo(() => {
     if (product) {
       if (!selectedColor && product.colors.length > 0) {
@@ -109,8 +109,9 @@ export default function ProductDetail() {
       if (!selectedCapSize && product.capSize.length > 0) {
         setSelectedCapSize(product.capSize[0]);
       }
+      addToRecentlyViewed(product.id);
     }
-  }, [product, selectedColor, selectedCapSize]);
+  }, [product, selectedColor, selectedCapSize, addToRecentlyViewed]);
 
   if (dbLoading) {
     return (
