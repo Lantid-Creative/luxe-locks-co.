@@ -22,6 +22,12 @@ const contactInfo = [
     href: '#',
   },
   {
+    icon: Phone,
+    title: 'Phone',
+    value: '+1 (765) 694-9046',
+    href: 'tel:+17656949046',
+  },
+  {
     icon: Clock,
     title: 'Hours',
     value: 'Mon - Fri: 9AM - 6PM EST',
