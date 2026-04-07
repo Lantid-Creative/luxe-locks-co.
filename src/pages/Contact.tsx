@@ -1,4 +1,4 @@
-import { Mail, MapPin, Clock, Instagram, Facebook } from 'lucide-react';
+import { Mail, MapPin, Clock, Phone, Instagram, Facebook } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/layout/CartDrawer';
@@ -20,6 +20,12 @@ const contactInfo = [
     title: 'Address',
     value: 'Sagamore Pkwy W, West Lafayette, IN 47906',
     href: '#',
+  },
+  {
+    icon: Phone,
+    title: 'Phone',
+    value: '+1 (765) 694-9046',
+    href: 'tel:+17656949046',
   },
   {
     icon: Clock,
