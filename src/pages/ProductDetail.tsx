@@ -19,6 +19,10 @@ import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
+import { RecentlyViewed } from '@/components/products/RecentlyViewed';
+import { StockBadge } from '@/components/products/StockBadge';
+import { CapSizeGuide } from '@/components/products/CapSizeGuide';
+import { useRecentlyViewed } from '@/hooks/useRecentlyViewed';
 
 export default function ProductDetail() {
   const { id } = useParams();
