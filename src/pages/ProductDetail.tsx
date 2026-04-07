@@ -333,7 +333,10 @@ export default function ProductDetail() {
 
               {/* Cap Size Selection */}
               <div className="mb-8">
-                <p className="font-medium mb-3">Cap Size: <span className="text-muted-foreground">{selectedCapSize}</span></p>
+                <div className="flex items-center gap-3 mb-3">
+                  <p className="font-medium">Cap Size: <span className="text-muted-foreground">{selectedCapSize}</span></p>
+                  <CapSizeGuide />
+                </div>
                 <div className="flex flex-wrap gap-3">
                   {product.capSize.map((size) => (
                     <button
