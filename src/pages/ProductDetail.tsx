@@ -239,7 +239,7 @@ export default function ProductDetail() {
             {/* Product Info */}
             <div>
               {/* Badges */}
-              <div className="flex gap-2 mb-4">
+              <div className="flex flex-wrap gap-2 mb-4">
                 {isBestseller && (
                   <span className="px-3 py-1 bg-gold text-accent-foreground text-xs font-semibold rounded-full">
                     Bestseller
@@ -250,6 +250,7 @@ export default function ProductDetail() {
                     New Arrival
                   </span>
                 )}
+                <StockBadge stockQuantity={product.stock_quantity} />
               </div>
 
               <h1 className="font-serif text-3xl lg:text-4xl font-semibold mb-4">
