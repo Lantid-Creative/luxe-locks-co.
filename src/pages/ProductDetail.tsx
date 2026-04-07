@@ -31,6 +31,7 @@ export default function ProductDetail() {
   const { addToCompare, removeFromCompare, isInCompare } = useCompare();
   const { user } = useAuth();
   const { toast } = useToast();
+  const { addToRecentlyViewed } = useRecentlyViewed();
 
   // Try to fetch from database first
   const { data: dbProduct, isLoading: dbLoading } = useProduct(id || '');
