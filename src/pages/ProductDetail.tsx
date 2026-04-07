@@ -459,6 +459,9 @@ export default function ProductDetail() {
               </div>
             </div>
           )}
+
+          {/* Recently Viewed */}
+          <RecentlyViewed excludeId={product.id} />
         </div>
       </main>
 

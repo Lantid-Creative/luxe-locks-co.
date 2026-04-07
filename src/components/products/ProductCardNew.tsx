@@ -98,6 +98,11 @@ export const ProductCardNew = forwardRef<HTMLDivElement, ProductCardProps>(funct
               -{discount}%
             </span>
           )}
+          {product.stock_quantity > 0 && product.stock_quantity <= 5 && (
+            <span className="px-3 py-1 bg-destructive/10 text-destructive text-xs font-semibold rounded-full">
+              Only {product.stock_quantity} left!
+            </span>
+          )}
         </div>
 
         {/* Action Buttons */}
