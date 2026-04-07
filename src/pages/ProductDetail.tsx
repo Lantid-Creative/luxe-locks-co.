@@ -19,6 +19,10 @@ import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
+import { RecentlyViewed } from '@/components/products/RecentlyViewed';
+import { StockBadge } from '@/components/products/StockBadge';
+import { CapSizeGuide } from '@/components/products/CapSizeGuide';
+import { useRecentlyViewed } from '@/hooks/useRecentlyViewed';
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -27,6 +31,7 @@ export default function ProductDetail() {
   const { addToCompare, removeFromCompare, isInCompare } = useCompare();
   const { user } = useAuth();
   const { toast } = useToast();
+  const { addToRecentlyViewed } = useRecentlyViewed();
 
   // Try to fetch from database first
   const { data: dbProduct, isLoading: dbLoading } = useProduct(id || '');
@@ -95,7 +100,7 @@ export default function ProductDetail() {
   const [selectedCapSize, setSelectedCapSize] = useState('');
   const [quantity, setQuantity] = useState(1);
 
-  // Set defaults when product loads
+  // Set defaults when product loads & track recently viewed
   useMemo(() => {
     if (product) {
       if (!selectedColor && product.colors.length > 0) {
@@ -104,8 +109,9 @@ export default function ProductDetail() {
       if (!selectedCapSize && product.capSize.length > 0) {
         setSelectedCapSize(product.capSize[0]);
       }
+      addToRecentlyViewed(product.id);
     }
-  }, [product, selectedColor, selectedCapSize]);
+  }, [product, selectedColor, selectedCapSize, addToRecentlyViewed]);
 
   if (dbLoading) {
     return (
@@ -233,7 +239,7 @@ export default function ProductDetail() {
             {/* Product Info */}
             <div>
               {/* Badges */}
-              <div className="flex gap-2 mb-4">
+              <div className="flex flex-wrap gap-2 mb-4">
                 {isBestseller && (
                   <span className="px-3 py-1 bg-gold text-accent-foreground text-xs font-semibold rounded-full">
                     Bestseller
@@ -244,6 +250,7 @@ export default function ProductDetail() {
                     New Arrival
                   </span>
                 )}
+                <StockBadge stockQuantity={product.stock_quantity} />
               </div>
 
               <h1 className="font-serif text-3xl lg:text-4xl font-semibold mb-4">
@@ -326,7 +333,10 @@ export default function ProductDetail() {
 
               {/* Cap Size Selection */}
               <div className="mb-8">
-                <p className="font-medium mb-3">Cap Size: <span className="text-muted-foreground">{selectedCapSize}</span></p>
+                <div className="flex items-center gap-3 mb-3">
+                  <p className="font-medium">Cap Size: <span className="text-muted-foreground">{selectedCapSize}</span></p>
+                  <CapSizeGuide />
+                </div>
                 <div className="flex flex-wrap gap-3">
                   {product.capSize.map((size) => (
                     <button
@@ -449,6 +459,9 @@ export default function ProductDetail() {
               </div>
             </div>
           )}
+
+          {/* Recently Viewed */}
+          <RecentlyViewed excludeId={product.id} />
         </div>
       </main>
 
