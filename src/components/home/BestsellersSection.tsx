@@ -14,7 +14,6 @@ export function BestsellersSection() {
     if (dbProducts && dbProducts.length > 0) {
       return dbProducts.map(normalizeProduct);
     }
-    // Fallback to mock data
     return mockProducts
       .filter((p) => p.bestseller)
       .slice(0, 4)
@@ -36,12 +35,12 @@ export function BestsellersSection() {
   }, [dbProducts]);
 
   return (
-    <section className="py-20 lg:py-28 bg-secondary/30">
+    <section className="py-24 lg:py-32 bg-secondary/20">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Header */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-14">
           <div>
-            <p className="text-gold text-sm font-medium tracking-wider uppercase mb-3">
+            <p className="text-gold text-xs font-semibold tracking-[0.25em] uppercase mb-3">
               Customer Favorites
             </p>
             <h2 className="font-serif text-3xl lg:text-5xl font-semibold">
@@ -50,7 +49,7 @@ export function BestsellersSection() {
           </div>
           <Button
             variant="outline"
-            className="self-start lg:self-auto border-2 group"
+            className="self-start lg:self-auto border-2 group rounded-full"
             asChild
           >
             <Link to="/shop">
@@ -66,13 +65,9 @@ export function BestsellersSection() {
             <Loader2 className="w-8 h-8 animate-spin text-primary" />
           </div>
         ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-            {bestsellers.map((product, index) => (
-              <div
-                key={product.id}
-                className="animate-fade-up"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
+            {bestsellers.map((product) => (
+              <div key={product.id}>
                 <ProductCardNew product={product} />
               </div>
             ))}
