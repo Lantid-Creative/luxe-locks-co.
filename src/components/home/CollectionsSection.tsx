@@ -17,7 +17,6 @@ export function CollectionsSection() {
     },
   });
 
-  // Map each collection to the correct product image by matching product name keywords
   const collectionData = [
     {
       id: 'straight',
@@ -50,45 +49,43 @@ export function CollectionsSection() {
   ];
 
   return (
-    <section className="py-20 lg:py-28 bg-background">
+    <section className="py-24 lg:py-32 bg-background">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-12 lg:mb-16">
-          <p className="text-gold text-sm font-medium tracking-wider uppercase mb-3">
-            Curated For You
-          </p>
-          <h2 className="font-serif text-3xl lg:text-5xl font-semibold mb-4">
-            Shop by Collection
-          </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Discover our carefully curated collections designed to match every style and occasion
-          </p>
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-14">
+          <div>
+            <p className="text-gold text-xs font-semibold tracking-[0.25em] uppercase mb-3">
+              Curated For You
+            </p>
+            <h2 className="font-serif text-3xl lg:text-5xl font-semibold leading-tight">
+              Shop by Collection
+            </h2>
+          </div>
+          <Link to="/shop" className="text-sm font-medium text-primary hover:text-gold transition-colors flex items-center gap-1 group">
+            View All
+            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+          </Link>
         </div>
 
-        {/* Collections Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Collections Grid — featured first item large */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
           {collectionData.map((collection, index) => (
             <Link
               key={collection.id}
               to={collection.slug === 'all' ? '/shop' : `/shop?collection=${collection.slug}`}
-              className="group relative overflow-hidden rounded-2xl aspect-[3/4] card-hover"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              className={`group relative overflow-hidden rounded-2xl card-hover ${index === 0 ? 'md:col-span-2 md:row-span-2 aspect-square' : 'aspect-[3/4]'}`}
             >
               <img
                 src={collection.image}
                 alt={collection.name}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/20 to-transparent" />
-              
-              {/* Content */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
               <div className="absolute inset-0 p-6 flex flex-col justify-end">
-                <h3 className="font-serif text-xl lg:text-2xl font-semibold text-primary-foreground mb-2">
+                <h3 className="font-serif text-xl lg:text-2xl font-semibold text-white mb-1">
                   {collection.name}
                 </h3>
-                <p className="text-primary-foreground/70 text-sm mb-4">
+                <p className="text-white/60 text-sm mb-3">
                   {collection.description}
                 </p>
                 <span className="inline-flex items-center text-gold text-sm font-medium group-hover:gap-2 transition-all">
