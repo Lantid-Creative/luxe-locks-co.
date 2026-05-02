@@ -28,24 +28,22 @@ const socialLinks = [
   { icon: null, href: '#', label: 'TikTok' },
 ];
 
-const trustBadges = [
-  { text: 'Secure Payment', icon: '🔒' },
-  { text: '100% Human Hair', icon: '✨' },
-  { text: 'Fast Shipping', icon: '🚚' },
-  { text: 'Quality Guarantee', icon: '💎' },
-];
-
 export function Footer() {
   return (
-    <footer className="bg-primary text-primary-foreground">
+    <footer className="bg-primary text-white">
       {/* Trust Badges */}
-      <div className="border-b border-primary-foreground/10">
+      <div className="border-b border-white/10">
         <div className="container mx-auto px-4 py-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {trustBadges.map((badge) => (
+            {[
+              { text: 'Secure Payment', icon: '🔒' },
+              { text: '100% Human Hair', icon: '✨' },
+              { text: 'Fast Shipping', icon: '🚚' },
+              { text: 'Quality Guarantee', icon: '💎' },
+            ].map((badge) => (
               <div key={badge.text} className="flex items-center justify-center gap-3">
-                <span className="text-2xl">{badge.icon}</span>
-                <span className="text-sm font-medium">{badge.text}</span>
+                <span className="text-xl">{badge.icon}</span>
+                <span className="text-xs font-medium tracking-wider uppercase">{badge.text}</span>
               </div>
             ))}
           </div>
@@ -53,8 +51,8 @@ export function Footer() {
       </div>
 
       {/* Main Footer */}
-      <div className="container mx-auto px-4 py-12 lg:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
+      <div className="container mx-auto px-4 py-14 lg:py-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-12">
           {/* Brand Column */}
           <div className="lg:col-span-2">
             <Link to="/" className="inline-block mb-6">
@@ -62,39 +60,39 @@ export function Footer() {
                 TRAZZIE✦
               </span>
             </Link>
-            <p className="text-primary-foreground/70 mb-6 max-w-sm">
+            <p className="text-white/50 mb-6 max-w-sm text-sm leading-relaxed">
               Elevate your beauty with premium quality wigs and hair extensions. 
               Confidence starts with stunning hair.
             </p>
             
             {/* Newsletter */}
             <div className="mb-6">
-              <h4 className="font-medium mb-3">Subscribe to our newsletter</h4>
+              <h4 className="font-medium text-sm mb-3 tracking-wider">SUBSCRIBE TO OUR NEWSLETTER</h4>
               <div className="flex gap-2">
                 <Input
                   type="email"
                   placeholder="Enter your email"
-                  className="bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50"
+                  className="bg-white/10 border-white/20 text-white placeholder:text-white/40 rounded-full h-11"
                 />
-                <Button className="bg-gold text-accent-foreground hover:bg-gold-light shrink-0">
+                <Button className="bg-gold text-accent-foreground hover:bg-gold-light shrink-0 rounded-full h-11 px-6 font-semibold text-xs">
                   Subscribe
                 </Button>
               </div>
             </div>
 
             {/* Social Links */}
-            <div className="flex gap-4">
+            <div className="flex gap-3">
               {socialLinks.map((social) => (
                 <a
                   key={social.label}
                   href={social.href}
                   aria-label={social.label}
-                  className="w-10 h-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-gold hover:text-accent-foreground transition-colors"
+                  className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-gold hover:text-accent-foreground transition-colors"
                 >
                   {social.icon ? (
-                    <social.icon className="w-5 h-5" />
+                    <social.icon className="w-4 h-4" />
                   ) : (
-                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.75a8.18 8.18 0 0 0 4.76 1.52V6.82a4.83 4.83 0 0 1-1-.13z"/></svg>
+                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.75a8.18 8.18 0 0 0 4.76 1.52V6.82a4.83 4.83 0 0 1-1-.13z"/></svg>
                   )}
                 </a>
               ))}
@@ -103,14 +101,11 @@ export function Footer() {
 
           {/* Shop Links */}
           <div>
-            <h4 className="font-serif text-lg font-semibold mb-4">Shop</h4>
+            <h4 className="font-semibold text-xs tracking-[0.2em] uppercase mb-5">Shop</h4>
             <ul className="space-y-3">
               {footerLinks.shop.map((link) => (
                 <li key={link.name}>
-                  <Link
-                    to={link.href}
-                    className="text-primary-foreground/70 hover:text-gold transition-colors"
-                  >
+                  <Link to={link.href} className="text-white/50 hover:text-gold transition-colors text-sm">
                     {link.name}
                   </Link>
                 </li>
@@ -120,14 +115,11 @@ export function Footer() {
 
           {/* Help Links */}
           <div>
-            <h4 className="font-serif text-lg font-semibold mb-4">Company</h4>
+            <h4 className="font-semibold text-xs tracking-[0.2em] uppercase mb-5">Company</h4>
             <ul className="space-y-3">
               {footerLinks.help.map((link) => (
                 <li key={link.name}>
-                  <Link
-                    to={link.href}
-                    className="text-primary-foreground/70 hover:text-gold transition-colors"
-                  >
+                  <Link to={link.href} className="text-white/50 hover:text-gold transition-colors text-sm">
                     {link.name}
                   </Link>
                 </li>
@@ -137,26 +129,19 @@ export function Footer() {
 
           {/* Legal Links */}
           <div>
-            <h4 className="font-serif text-lg font-semibold mb-4">Legal</h4>
+            <h4 className="font-semibold text-xs tracking-[0.2em] uppercase mb-5">Legal</h4>
             <ul className="space-y-3">
               {footerLinks.legal.map((link) => (
                 <li key={link.name}>
-                  <Link
-                    to={link.href}
-                    className="text-primary-foreground/70 hover:text-gold transition-colors"
-                  >
+                  <Link to={link.href} className="text-white/50 hover:text-gold transition-colors text-sm">
                     {link.name}
                   </Link>
                 </li>
               ))}
             </ul>
 
-            {/* Contact Info */}
-            <div className="mt-6 space-y-3">
-              <a
-                href="mailto:hello@trazzie.com"
-                className="flex items-center gap-2 text-primary-foreground/70 hover:text-gold transition-colors"
-              >
+            <div className="mt-6">
+              <a href="mailto:hello@trazzie.com" className="flex items-center gap-2 text-white/50 hover:text-gold transition-colors text-sm">
                 <Mail className="w-4 h-4" />
                 <span>hello@trazzie.com</span>
               </a>
@@ -165,16 +150,16 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t border-primary-foreground/10">
+        <div className="mt-14 pt-8 border-t border-white/10">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-primary-foreground/50 text-sm">
+            <p className="text-white/30 text-xs">
               © 2026 Trazzie. All rights reserved.
             </p>
-            <div className="flex gap-6 text-sm">
-              <Link to="/privacy-policy" className="text-primary-foreground/50 hover:text-gold transition-colors">
+            <div className="flex gap-6 text-xs">
+              <Link to="/privacy-policy" className="text-white/30 hover:text-gold transition-colors">
                 Privacy Policy
               </Link>
-              <Link to="/terms-of-service" className="text-primary-foreground/50 hover:text-gold transition-colors">
+              <Link to="/terms-of-service" className="text-white/30 hover:text-gold transition-colors">
                 Terms of Service
               </Link>
             </div>

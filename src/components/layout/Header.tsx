@@ -9,12 +9,11 @@ import { SearchDialog } from '@/components/search/SearchDialog';
 
 const navigation = [
   { name: 'Home', href: '/' },
-  { name: 'Shop', href: '/shop' },
-  { name: 'Collections', href: '/collections' },
-  { name: 'Blog', href: '/blog' },
-  { name: 'FAQ', href: '/faq' },
+  { name: 'Best Sellers', href: '/shop?sort=bestsellers' },
+  { name: 'New Collection', href: '/collections' },
+  { name: 'Products', href: '/shop' },
   { name: 'About', href: '/about' },
-  { name: 'Contact', href: '/contact' },
+  { name: 'FAQ', href: '/faq' },
 ];
 
 export function Header() {
@@ -26,119 +25,135 @@ export function Header() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+      <header className="fixed top-0 left-0 right-0 z-50">
         {/* Announcement Bar */}
-        <div className="bg-primary text-primary-foreground text-center py-2 text-sm">
-          <p>✨ Free Shipping on Orders Over $200 | Use Code: <span className="font-semibold">TRAZZIE20</span> for 20% Off</p>
+        <div className="bg-primary text-white text-center py-2 text-xs tracking-wider">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi.</p>
         </div>
 
-        <nav className="container mx-auto px-4 lg:px-8">
-          <div className="flex items-center justify-between h-16 lg:h-20">
-            {/* Mobile Menu Button */}
-            <button
-              className="lg:hidden p-2 -ml-2"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              {mobileMenuOpen ? (
-                <X className="w-6 h-6" />
-              ) : (
-                <Menu className="w-6 h-6" />
-              )}
-            </button>
+        <nav className="bg-background/90 backdrop-blur-md border-b border-border">
+          <div className="container mx-auto px-4 lg:px-8">
+            <div className="flex items-center justify-between h-16 lg:h-20">
+              {/* Left Nav */}
+              <div className="hidden lg:flex items-center gap-7">
+                {navigation.slice(0, 3).map((item) => (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    className={cn(
+                      'text-xs font-medium tracking-wider uppercase transition-colors hover:text-gold',
+                      location.pathname === item.href
+                        ? 'text-foreground'
+                        : 'text-muted-foreground'
+                    )}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
 
-            {/* Logo */}
-            <Link to="/" className="flex items-center gap-2">
-              <span className="font-serif text-2xl lg:text-3xl font-semibold tracking-tight text-gold">
-                TRAZZIE✦
-              </span>
-            </Link>
-
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-8">
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className={cn(
-                    'text-sm font-medium transition-colors hover:text-gold relative py-2',
-                    location.pathname === item.href
-                      ? 'text-foreground after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-gold'
-                      : 'text-muted-foreground'
-                  )}
-                >
-                  {item.name}
-                </Link>
-              ))}
-            </div>
-
-            {/* Right Actions */}
-            <div className="flex items-center gap-2 lg:gap-4">
-              <Button variant="ghost" size="icon" className="hidden lg:flex" onClick={() => setSearchOpen(true)}>
-                <Search className="w-5 h-5" />
-              </Button>
-              <Button variant="ghost" size="icon" asChild>
-                <Link to="/wishlist">
-                  <Heart className="w-5 h-5" />
-                </Link>
-              </Button>
-              <Button variant="ghost" size="icon" className="hidden lg:flex" asChild>
-                <Link to={user ? "/account" : "/auth"}>
-                  <User className="w-5 h-5" />
-                </Link>
-              </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="relative"
-              onClick={() => setIsCartOpen(true)}
-            >
-              <ShoppingBag className="w-5 h-5" />
-              {totalItems > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-gold text-accent-foreground text-xs font-semibold rounded-full flex items-center justify-center">
-                  {totalItems}
-                </span>
-              )}
-            </Button>
-          </div>
-        </div>
-
-        {/* Mobile Menu */}
-        <div
-          className={cn(
-            'lg:hidden overflow-hidden transition-all duration-300',
-            mobileMenuOpen ? 'max-h-96 pb-6' : 'max-h-0'
-          )}
-        >
-          <div className="flex flex-col gap-4 pt-4">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className={cn(
-                  'text-lg font-medium transition-colors hover:text-gold',
-                  location.pathname === item.href
-                    ? 'text-foreground'
-                    : 'text-muted-foreground'
-                )}
+              {/* Mobile Menu Button */}
+              <button
+                className="lg:hidden p-2 -ml-2"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               >
-                {item.name}
+                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
+
+              {/* Logo */}
+              <Link to="/" className="absolute left-1/2 -translate-x-1/2 lg:static lg:translate-x-0">
+                <span className="font-serif text-2xl lg:text-3xl font-semibold tracking-tight text-gold">
+                  TRAZZIE✦
+                </span>
               </Link>
-            ))}
-            <div className="flex items-center gap-4 pt-4 border-t border-border">
-              <Button variant="outline" size="sm" className="flex-1" asChild>
-                <Link to={user ? "/account" : "/auth"} onClick={() => setMobileMenuOpen(false)}>
-                  <User className="w-4 h-4 mr-2" />
-                  Account
-                </Link>
-              </Button>
-              <Button variant="outline" size="sm" className="flex-1" onClick={() => { setMobileMenuOpen(false); setSearchOpen(true); }}>
-                <Search className="w-4 h-4 mr-2" />
-                Search
-              </Button>
+
+              {/* Right Nav + Actions */}
+              <div className="flex items-center gap-5">
+                <div className="hidden lg:flex items-center gap-7">
+                  {navigation.slice(3).map((item) => (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      className={cn(
+                        'text-xs font-medium tracking-wider uppercase transition-colors hover:text-gold',
+                        location.pathname === item.href
+                          ? 'text-foreground'
+                          : 'text-muted-foreground'
+                      )}
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                </div>
+
+                <div className="flex items-center gap-1">
+                  <Button variant="ghost" size="icon" className="w-9 h-9" onClick={() => setSearchOpen(true)}>
+                    <Search className="w-4 h-4" />
+                  </Button>
+                  <Button variant="ghost" size="icon" className="w-9 h-9" asChild>
+                    <Link to="/wishlist">
+                      <Heart className="w-4 h-4" />
+                    </Link>
+                  </Button>
+                  <Button variant="ghost" size="icon" className="hidden lg:flex w-9 h-9" asChild>
+                    <Link to={user ? "/account" : "/auth"}>
+                      <User className="w-4 h-4" />
+                    </Link>
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="relative w-9 h-9"
+                    onClick={() => setIsCartOpen(true)}
+                  >
+                    <ShoppingBag className="w-4 h-4" />
+                    {totalItems > 0 && (
+                      <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-gold text-accent-foreground text-[10px] font-bold rounded-full flex items-center justify-center">
+                        {totalItems}
+                      </span>
+                    )}
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            {/* Mobile Menu */}
+            <div
+              className={cn(
+                'lg:hidden overflow-hidden transition-all duration-300',
+                mobileMenuOpen ? 'max-h-96 pb-6' : 'max-h-0'
+              )}
+            >
+              <div className="flex flex-col gap-4 pt-4">
+                {navigation.map((item) => (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={cn(
+                      'text-base font-medium transition-colors hover:text-gold',
+                      location.pathname === item.href ? 'text-foreground' : 'text-muted-foreground'
+                    )}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+                <div className="flex items-center gap-4 pt-4 border-t border-border">
+                  <Button variant="outline" size="sm" className="flex-1 rounded-full" asChild>
+                    <Link to={user ? "/account" : "/auth"} onClick={() => setMobileMenuOpen(false)}>
+                      <User className="w-4 h-4 mr-2" />
+                      Account
+                    </Link>
+                  </Button>
+                  <Button variant="outline" size="sm" className="flex-1 rounded-full" asChild>
+                    <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>
+                      Contact
+                    </Link>
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
         </nav>
       </header>
       <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
