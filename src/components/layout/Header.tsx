@@ -28,7 +28,7 @@ export function Header() {
       <header className="fixed top-0 left-0 right-0 z-50">
         {/* Announcement Bar */}
         <div className="bg-primary text-white text-center py-2 text-xs tracking-wider">
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi.</p>
+          <p>✨ Free Shipping on Orders Over $200 | Use Code: <span className="font-semibold">TRAZZIE20</span> for 20% Off</p>
         </div>
 
         <nav className="bg-background/90 backdrop-blur-md border-b border-border">
