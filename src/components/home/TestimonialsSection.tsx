@@ -43,14 +43,12 @@ const testimonials = [
   },
 ];
 
-const avatarColors = ['bg-gold/20 text-gold', 'bg-rose/20 text-rose', 'bg-primary/20 text-primary', 'bg-gold/30 text-gold'];
-
 export function TestimonialsSection() {
   return (
-    <section className="py-20 lg:py-28 bg-background">
+    <section className="py-24 lg:py-32 bg-secondary/30">
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="text-center mb-12 lg:mb-16">
-          <p className="text-gold text-sm font-medium tracking-wider uppercase mb-3">
+        <div className="text-center mb-14">
+          <p className="text-gold text-xs font-semibold tracking-[0.25em] uppercase mb-3">
             Real Reviews
           </p>
           <h2 className="font-serif text-3xl lg:text-5xl font-semibold mb-4">
@@ -61,39 +59,38 @@ export function TestimonialsSection() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
           {testimonials.map((review, index) => (
             <div
               key={review.id}
-              className="bg-card rounded-2xl p-6 border border-border card-hover"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              className="bg-card rounded-2xl p-6 border border-border hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
             >
-              <Quote className="w-8 h-8 text-gold/30 mb-4" />
+              <Quote className="w-7 h-7 text-gold/30 mb-4" />
               
-              <div className="flex gap-1 mb-4">
+              <div className="flex gap-0.5 mb-4">
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
-                    className={`w-4 h-4 ${
+                    className={`w-3.5 h-3.5 ${
                       i < review.rating ? 'text-gold fill-gold' : 'text-muted-foreground'
                     }`}
                   />
                 ))}
               </div>
 
-              <p className="text-muted-foreground text-sm leading-relaxed mb-6">
+              <p className="text-muted-foreground text-sm leading-relaxed mb-6 line-clamp-4">
                 "{review.content}"
               </p>
 
-              <div className="flex items-center gap-3">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold ${avatarColors[index % avatarColors.length]}`}>
+              <div className="flex items-center gap-3 pt-4 border-t border-border">
+                <div className="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-bold">
                   {review.initials}
                 </div>
                 <div>
-                  <p className="font-medium text-sm flex items-center gap-2">
+                  <p className="font-medium text-sm flex items-center gap-1.5">
                     {review.author}
                     {review.verified && (
-                      <span className="text-xs text-gold">✓ Verified</span>
+                      <span className="text-[10px] text-gold font-semibold">✓ Verified</span>
                     )}
                   </p>
                   <p className="text-xs text-muted-foreground">{review.date}</p>
