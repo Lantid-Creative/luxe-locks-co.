@@ -35,21 +35,21 @@ export function BestsellersSection() {
   }, [dbProducts]);
 
   return (
-    <section className="py-24 lg:py-32 bg-secondary/20">
+    <section className="py-24 lg:py-32 bg-warm">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-14">
           <div>
-            <p className="text-gold text-xs font-semibold tracking-[0.25em] uppercase mb-3">
+            <p className="text-xs font-bold tracking-[0.3em] uppercase text-muted-foreground mb-4">
               Customer Favorites
             </p>
-            <h2 className="font-serif text-3xl lg:text-5xl font-semibold">
-              Bestselling Wigs
+            <h2 className="font-serif text-4xl lg:text-6xl font-bold">
+              Bestselling <span className="heading-italic text-primary">Wigs.</span>
             </h2>
           </div>
           <Button
             variant="outline"
-            className="self-start lg:self-auto border-2 group rounded-full"
+            className="self-start lg:self-auto border-2 group rounded-full font-bold tracking-wide"
             asChild
           >
             <Link to="/shop">
@@ -59,7 +59,7 @@ export function BestsellersSection() {
           </Button>
         </div>
 
-        {/* Products Grid */}
+        {/* Grid */}
         {isLoading ? (
           <div className="flex items-center justify-center py-16">
             <Loader2 className="w-8 h-8 animate-spin text-primary" />

@@ -25,33 +25,34 @@ const features = [
 
 export function WhyChooseUsSection() {
   return (
-    <section className="py-24 lg:py-32 bg-primary text-white">
+    <section className="py-24 lg:py-32 bg-primary text-primary-foreground">
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="text-center mb-14">
-          <p className="text-gold text-xs font-semibold tracking-[0.25em] uppercase mb-3">
+        <div className="mb-14">
+          <p className="text-xs font-bold tracking-[0.3em] uppercase text-gold mb-4">
             The Trazzie Difference
           </p>
-          <h2 className="font-serif text-3xl lg:text-5xl font-semibold mb-4">
-            Why Choose Us
+          <h2 className="font-serif text-4xl lg:text-6xl font-bold mb-4 max-w-2xl">
+            Why choose <span className="heading-italic font-medium">us.</span>
           </h2>
-          <p className="text-white/60 max-w-2xl mx-auto">
-            We're committed to helping you look and feel your absolute best
+          <p className="text-primary-foreground/50 max-w-xl text-base">
+            We didn't reinvent the wig — we put premium craftsmanship behind it.
+            Verified quality, ethically sourced, transparent pricing.
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {features.map((feature) => (
             <div
               key={feature.title}
-              className="text-center p-8 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300"
+              className="p-7 rounded-2xl bg-white/[0.06] border border-white/[0.08] hover:bg-white/[0.1] transition-all duration-300"
             >
-              <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-gold/20 text-gold mb-6">
-                <feature.icon className="w-7 h-7" />
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gold/15 text-gold mb-6">
+                <feature.icon className="w-6 h-6" />
               </div>
-              <h3 className="font-serif text-xl font-semibold mb-3">
+              <h3 className="font-serif text-xl font-bold mb-3">
                 {feature.title}
               </h3>
-              <p className="text-white/60 text-sm leading-relaxed">
+              <p className="text-primary-foreground/50 text-sm leading-relaxed">
                 {feature.description}
               </p>
             </div>
